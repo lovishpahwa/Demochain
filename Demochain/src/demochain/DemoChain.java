@@ -8,6 +8,8 @@ import java.security.Security;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.google.gson.GsonBuilder;
+
 public class DemoChain {
 
 	public static ArrayList<Block> blockchain = new ArrayList<Block>();
@@ -158,7 +160,6 @@ public class DemoChain {
 		 * System.out.println(transaction.verifiySignature());
 		 */
 
-		// add our blocks to the blockchain ArrayList:
 		Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider()); // Setup Bouncey castle as a Security Provider
 
 		// Create wallets:
@@ -199,10 +200,16 @@ public class DemoChain {
 		Block block3 = new Block(block2.hash);
 		System.out.println("\nWalletB is Attempting to send funds (20) to WalletA...");
 		block3.addTransaction(walletB.sendFunds(walletA.publicKey, 20));
+		addBlock(block3);
 		System.out.println("\nWalletA's balance is: " + walletA.getBalance());
 		System.out.println("WalletB's balance is: " + walletB.getBalance());
 
 		isChainValid();
+		
+//		To print the block chain
+		/*String blockchainJson = new GsonBuilder().setPrettyPrinting().create().toJson(blockchain);
+		System.out.println("\nHere's the chain : ");
+	    System.out.println(blockchainJson);*/
 	}
 
 	public static void addBlock(Block newBlock) {
